@@ -1,4 +1,3 @@
-
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
@@ -27,40 +26,25 @@ public class CheckMenuTest {
     }
 
     @Test
-    @DisplayName("Check link to menu 'Bun'")
-    @Description("Check transition by clicking on the link 'Bun' in the menu section 'Bun'")
-    public void checkLinkToMenuBun() {
+    @DisplayName("Check links to menu 'Bun', 'Sauces', 'Filling'")
+    @Description("Check transitions by clicking on the links 'Bun', 'Sauces', 'Filling' in the menu sections")
+    public void checkLinksToMenus() {
         boolean isHeaderBunDisplayed = mainPage
                 .clickLinkOrderFilling()
                 .clickLinkOrderBun()
                 .isConfirmThatHeaderBunIsDisplayed();
-
         WebDriverWait wait = new WebDriverWait(WebDriverRunner.getWebDriver(), Duration.ofMillis(10000));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class= 'text text_type_main-default'][text()='Булки']")));
-
         assertTrue("Transition to the menu section 'Bun' failed", isHeaderBunDisplayed);
-    }
 
-
-    @Test
-    @DisplayName("Check link to menu 'Sauces'")
-    @Description("Check transition by clicking on the link 'Sauces' in the menu section 'Sauces'")
-    public void checkLinkToMenuSauces() {
         boolean isHeaderSaucesDisplayed = mainPage
                 .clickLinkOrderSauces()
                 .isConfirmThatHeaderSaucesIsDisplayed();
-
         assertTrue("Transition to the menu section 'Sauces' failed", isHeaderSaucesDisplayed);
-    }
 
-    @Test
-    @DisplayName("Check link to menu 'Filling'")
-    @Description("Check transition by clicking on the link 'Filling' in the menu section 'Filling'")
-    public void checkLinkToMenuFilling() {
         boolean isHeaderFillingDisplayed = mainPage
                 .clickLinkOrderFilling()
                 .isConfirmThatHeaderFillingIsDisplayed();
-
         assertTrue("Transition to the menu section 'Filling' failed", isHeaderFillingDisplayed);
     }
 }
