@@ -8,6 +8,9 @@ import org.example.utils.UserGeneration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
@@ -18,12 +21,17 @@ public class RegistrationPageTest {
     private UserGeneration userGeneration;
     private UserClient userClient;
     private String accessToken;
+    private WebDriver driver;
 
     @Before
     public void startUp() {
         userClient = new UserClient();
         BrowserConfig browserConfig = new BrowserConfig();
         browserConfig.setBrowserName("yandex");
+        browserConfig.setBrowserName("chrome");
+        ChromeOptions options = new ChromeOptions();
+
+        driver = new ChromeDriver(options);
     }
 
     @After
@@ -53,7 +61,7 @@ public class RegistrationPageTest {
                 .clickButtonLoginEnter()
                 .isConfirmThatMainPageIsDisplayed();
 
-        accessToken = waitForLocalStorage();
+        accessToken = localStorage().getItem("accessToken").substring(7);
 
         assertTrue("Сожалею, что-то пошло не так. Регистрация не успешна", isRegistrationSuccessful);
     }
@@ -74,21 +82,5 @@ public class RegistrationPageTest {
                 .fillRegistrationForm(userName, userEmail, userWrongPassword)
                 .clickButtonUserRegistration()
                 .isConfirmThatRegistrationFalls();
-    }
-
-    public String waitForLocalStorage() throws InterruptedException {
-
-        long start_time = System.currentTimeMillis();
-        long wait_time = 60000;
-        long end_time = start_time + wait_time;
-
-        while (localStorage().getItem("accessToken") != null) {
-            Thread.sleep(100);
-
-            if (System.currentTimeMillis() < end_time) {
-                break;
-            }
-        }
-        return localStorage().getItem("accessToken").substring(7);
     }
 }

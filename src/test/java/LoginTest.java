@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class LoginTest {
 
     private UserGeneration userGeneration;
-    private UserClient userApiClient;
+    private UserClient userClient;
     private Registration userRegister;
     private String accessToken;
     WebDriver driver;
@@ -31,18 +31,18 @@ public class LoginTest {
         browserConfig.setBrowserName("yandex");
 
 //      Создание пользователя
-        userApiClient = new UserClient();
+        userClient = new UserClient();
         userGeneration = new UserGeneration();
         userRegister = new Registration(userGeneration.userName(),userGeneration.userEmail(),userGeneration.userPassword());
 
-        ValidatableResponse userCreateResponse = userApiClient.register(new Registration(userRegister.getName(), userRegister.getEmail(), userRegister.getPassword()));
+        ValidatableResponse userCreateResponse = userClient.register(new Registration(userRegister.getName(), userRegister.getEmail(), userRegister.getPassword()));
         accessToken = userCreateResponse.extract().path("accessToken");
 
     }
 
     @After
     public void tearDown() {
-        userApiClient.deleteForLogin(accessToken);
+        userClient.deleteForLogin(accessToken);
         BrowserConfig browserConfig = new BrowserConfig();
         browserConfig.setYandexBrowserProperties();
     }

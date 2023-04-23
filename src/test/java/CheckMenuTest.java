@@ -1,15 +1,8 @@
-import com.codeborne.selenide.WebDriverRunner;
-import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.example.utils.BrowserConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.example.PageObject.MainPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
 import static com.codeborne.selenide.Selenide.*;
@@ -26,25 +19,26 @@ public class CheckMenuTest {
     }
 
     @Test
-    @DisplayName("Check links to menu 'Bun', 'Sauces', 'Filling'")
-    @Description("Check transitions by clicking on the links 'Bun', 'Sauces', 'Filling' in the menu sections")
-    public void checkLinksToMenus() {
-        boolean isHeaderBunDisplayed = mainPage
-                .clickLinkOrderFilling()
-                .clickLinkOrderBun()
-                .isConfirmThatHeaderBunIsDisplayed();
-        WebDriverWait wait = new WebDriverWait(WebDriverRunner.getWebDriver(), Duration.ofMillis(10000));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class= 'text text_type_main-default'][text()='Булки']")));
-        assertTrue("Transition to the menu section 'Bun' failed", isHeaderBunDisplayed);
+    @DisplayName("Успешный переход к блоку булок")
+    public void checkSwitchToBunsSectionTest() {
+        mainPage.clickBunsTab();
+        boolean isBunsTabActive = mainPage.isBunsTabActive();
+        assertTrue("Нет переключения на раздел Булки при клике на таб Булки", isBunsTabActive);
+    }
 
-        boolean isHeaderSaucesDisplayed = mainPage
-                .clickLinkOrderSauces()
-                .isConfirmThatHeaderSaucesIsDisplayed();
-        assertTrue("Transition to the menu section 'Sauces' failed", isHeaderSaucesDisplayed);
+    @Test
+    @DisplayName("Успешный переход к блоку соусов")
+    public void checkSwitchToSaucesSectionTest() {
+        mainPage.clickSauceTab();
+        boolean isSaucesTabActive = mainPage.isSaucesTabActive();
+        assertTrue("Нет переключения на раздел Соусы при клике на таб Соусы", isSaucesTabActive);
+    }
 
-        boolean isHeaderFillingDisplayed = mainPage
-                .clickLinkOrderFilling()
-                .isConfirmThatHeaderFillingIsDisplayed();
-        assertTrue("Transition to the menu section 'Filling' failed", isHeaderFillingDisplayed);
+    @Test
+    @DisplayName("Успешный переход к блоку начинки")
+    public void checkSwitchToToppingsSectionTest() {
+        mainPage.clickToppingsTab();
+        boolean isFillingsTabActive = mainPage.isFillingsTabActive();
+        assertTrue("Нет переключения на раздел Начинки при клике на таб Начинки", isFillingsTabActive);
     }
 }

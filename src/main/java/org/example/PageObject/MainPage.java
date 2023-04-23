@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Selenide.page;
 
 public class MainPage {
@@ -13,35 +14,31 @@ public class MainPage {
     @FindBy(how = How.XPATH, using = "//p[@class='AppHeader_header__linkText__3q_va ml-2'][text()='Личный Кабинет']")
     private SelenideElement linkToPersonalCabinet;
 
-    @FindBy(how = How.XPATH, using = "//div[@class = 'AppHeader_header__logo__2D0X2']")
-    private SelenideElement logoStellarBurgers;
-
     @FindBy(how = How.XPATH, using = "//button[@class= 'button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']")
     private SelenideElement buttonGoToLoginForm;
-
-    @FindBy(how = How.XPATH, using = "//button[text() = 'Оформить заказ']")
-    private SelenideElement buttonCreateOrder;
 
     @FindBy(how = How.XPATH, using = "//h1 [text()= 'Соберите бургер']")
     private SelenideElement headerCreateBurger;
 
-    @FindBy(how = How.XPATH, using = "//span[@class= 'text text_type_main-default'][text()='Булки']")
-    private SelenideElement linkOrderBun;
+    // вкладка Булки
+    @FindBy(how = How.CSS, using = ".tab_tab__1SPyG:nth-child(1)")
+    private SelenideElement bunsTab;
 
-    @FindBy(how = How.XPATH, using = "//span[@class= 'text text_type_main-default'][text()='Соусы']")
-    private SelenideElement linkOrderSauces;
 
-    @FindBy(how = How.XPATH, using = "//span[@class= 'text text_type_main-default'][text()='Начинки']")
-    private SelenideElement linkOrderFilling;
+    // вкладка Соусы
+    @FindBy(how = How.CSS, using = ".tab_tab__1SPyG:nth-child(2)")
+    private SelenideElement saucesTab;
 
-    @FindBy(how = How.XPATH, using = "//h2[text()= 'Булки']")
-    private SelenideElement headerLocatorBun;
 
-    @FindBy(how = How.XPATH, using = "//h2[text()= 'Соусы']")
-    private SelenideElement headerLocatorSauces;
+    // вкладка Начинки
+    @FindBy(how = How.CSS, using = ".tab_tab__1SPyG:nth-child(3)")
+    private SelenideElement toppingsTab;
 
-    @FindBy(how = How.XPATH, using = "//h2[text()= 'Начинки']")
-    private SelenideElement headerLocatorFilling;
+    // сохранить в переменную активную секцию
+    @FindBy(how = How.CSS, using = ".tab_tab_type_current__2BEPc")
+    public SelenideElement activeSection;
+
+
 
     public LoginPage clickLinkToAccount() {
         linkToPersonalCabinet.click();
@@ -63,35 +60,35 @@ public class MainPage {
         return headerCreateBurger.isDisplayed();
     }
 
-    public MainPage clickLinkOrderBun() {
-        linkOrderBun.click();
-        return this;
+    @Step("текст Начинки")
+    public boolean isFillingsTabActive() {
+        return activeSection.getText().contentEquals("Начинки");
     }
 
-    public MainPage clickLinkOrderSauces() {
-        linkOrderSauces.click();
-        return this;
+    @Step("вытаскиваем текст активного таба (Соусы)")
+    public boolean isSaucesTabActive() {
+        return activeSection.getText().contentEquals("Соусы");
     }
 
-    public MainPage clickLinkOrderFilling() {
-        linkOrderFilling.click();
-        return this;
+    @Step("вытаскиваем текст активной вкладки (Булки)")
+    public boolean isBunsTabActive() {
+        return activeSection.getText().contentEquals("Булки");
     }
 
-    public boolean isConfirmThatHeaderBunIsDisplayed() {
-        headerLocatorBun.shouldBe(Condition.visible);
-        return headerLocatorBun.isDisplayed();
+    @Step("клик на вкладку Булки")
+    public void clickBunsTab() {
+        bunsTab.shouldBe(enabled).doubleClick();
     }
 
-    public boolean isConfirmThatHeaderSaucesIsDisplayed() {
-        headerLocatorSauces.shouldBe(Condition.visible);
-        return headerLocatorSauces.isDisplayed();
+    @Step("клик на вкладку Соусы")
+    public void clickSauceTab() {
+        saucesTab.shouldBe(enabled).click();
     }
 
-    public boolean isConfirmThatHeaderFillingIsDisplayed() {
-        headerLocatorFilling.shouldBe(Condition.visible);
-        return headerLocatorFilling.isDisplayed();
-    }
+    @Step("клик на вкладку Начинки")
+    public void clickToppingsTab() {
+        toppingsTab.click();
 
+    }
 }
 
